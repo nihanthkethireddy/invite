@@ -1,7 +1,6 @@
 import { Cinzel, Manrope } from "next/font/google";
 import {
   type CSSProperties,
-  type FormEvent,
   useEffect,
   useRef,
   useState,
@@ -153,26 +152,24 @@ const scenes: SceneItem[] = [
   })),
 ];
 
-const STORAGE_KEY = "invite_guest_phone";
-
 export default function Home() {
   const [activeScene, setActiveScene] = useState(0);
   const [snapEnabled, setSnapEnabled] = useState(false);
   const [visible, setVisible] = useState<number[]>([]);
+  const [animatedSections, setAnimatedSections] = useState<number[]>([]);
+  const [heroAnimated, setHeroAnimated] = useState(false);
   const inviteRef = useRef<HTMLDivElement | null>(null);
   const timelineRef = useRef<HTMLElement | null>(null);
+  const animatedRef = useRef<Set<number>>(new Set());
+  const heroAnimatedRef = useRef(false);
 
-  const [guest, setGuest] = useState<Guest | null>(null);
   const [nameInput, setNameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
   const [rsvpChoice, setRsvpChoice] = useState<RsvpChoice | null>(null);
   const [plusOnes, setPlusOnes] = useState(0);
 
-  const [showGuestModal, setShowGuestModal] = useState(true);
-  const [loadingGuest, setLoadingGuest] = useState(true);
   const [savingRsvp, setSavingRsvp] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
-  const [formError, setFormError] = useState("");
 
   useEffect(() => {
     const timeline = timelineRef.current;
@@ -249,6 +246,15 @@ export default function Home() {
           setVisible((prev) =>
             prev.includes(index) ? prev : [...prev, index].sort((a, b) => a - b)
           );
+
+          if (!animatedRef.current.has(index)) {
+            animatedRef.current.add(index);
+            window.setTimeout(() => {
+              setAnimatedSections((prev) =>
+                prev.includes(index) ? prev : [...prev, index].sort((a, b) => a - b)
+              );
+            }, 900);
+          }
         });
       },
       { threshold: 0.28, root: timeline }
@@ -271,6 +277,11 @@ export default function Home() {
       });
 
       setActiveScene(closestScene);
+
+      if (closestScene === 0 && !heroAnimatedRef.current) {
+        heroAnimatedRef.current = true;
+        window.setTimeout(() => setHeroAnimated(true), 900);
+      }
 
       const maxScroll = Math.max(1, timeline.scrollHeight - timeline.clientHeight);
       const progress = Math.min(1, Math.max(0, timeline.scrollTop / maxScroll));
@@ -299,75 +310,16 @@ export default function Home() {
     };
   }, []);
 
-  useEffect(() => {
-    const restoreGuest = async () => {
-      const storedPhone = window.localStorage.getItem(STORAGE_KEY);
-      if (!storedPhone) {
-        setLoadingGuest(false);
-        setShowGuestModal(true);
-        return;
-      }
-
-      try {
-        const res = await fetch(`/api/guest?phone=${encodeURIComponent(storedPhone)}`);
-        const data = (await res.json()) as { guest: Guest | null; error?: string };
-
-        if (!res.ok || !data.guest) {
-          window.localStorage.removeItem(STORAGE_KEY);
-          setLoadingGuest(false);
-          setShowGuestModal(true);
-          return;
-        }
-
-        applyGuest(data.guest);
-        setShowGuestModal(false);
-      } catch {
-        setShowGuestModal(true);
-      } finally {
-        setLoadingGuest(false);
-      }
-    };
-
-    void restoreGuest();
-  }, []);
-
   const applyGuest = (nextGuest: Guest) => {
-    setGuest(nextGuest);
-    setNameInput(nextGuest.name);
-    setPhoneInput(nextGuest.phone);
     setRsvpChoice(nextGuest.rsvp);
     setPlusOnes(nextGuest.plusOnes);
-    window.localStorage.setItem(STORAGE_KEY, nextGuest.phone);
-  };
-
-  const handleIdentitySubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setFormError("");
-
-    try {
-      const res = await fetch("/api/guest", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: nameInput, phone: phoneInput }),
-      });
-
-      const data = (await res.json()) as { guest?: Guest; error?: string };
-      if (!res.ok || !data.guest) {
-        setFormError(data.error ?? "Unable to continue");
-        return;
-      }
-
-      applyGuest(data.guest);
-      setShowGuestModal(false);
-      setStatusMessage("Welcome! Please choose your RSVP at the end.");
-    } catch {
-      setFormError("Something went wrong. Try again.");
-    }
   };
 
   const saveRsvp = async (choice: RsvpChoice, nextPlusOnes: number) => {
-    if (!guest) {
-      setShowGuestModal(true);
+    const trimmedName = nameInput.trim();
+    const trimmedPhone = phoneInput.trim();
+    if (!trimmedName || !trimmedPhone) {
+      setStatusMessage("Please enter your name and phone number before RSVP.");
       return;
     }
 
@@ -379,8 +331,8 @@ export default function Home() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: guest.name,
-          phone: guest.phone,
+          name: trimmedName,
+          phone: trimmedPhone,
           rsvp: choice,
           plusOnes: choice === "no" ? 0 : nextPlusOnes,
         }),
@@ -454,46 +406,26 @@ export default function Home() {
         <span className="spark spark-a" />
         <span className="spark spark-b" />
         <span className="spark spark-c" />
+        <span className="spark spark-d" />
+        <span className="spark spark-e" />
+        <span className="spark spark-f" />
+        <span className="spark spark-g" />
+        <span className="spark spark-h" />
+        <span className="spark spark-i" />
       </div>
-
-      {showGuestModal && !loadingGuest ? (
-        <div className="guest-modal" role="dialog" aria-modal="true">
-          <form className="guest-form" onSubmit={handleIdentitySubmit}>
-            <p className="eyebrow">Welcome</p>
-            <h2>Before we begin</h2>
-            <p>
-              Please share your name and phone number. One RSVP is tracked per
-              phone number.
-            </p>
-            <label htmlFor="name">Name</label>
-            <input
-              id="name"
-              value={nameInput}
-              onChange={(event) => setNameInput(event.target.value)}
-              placeholder="Your full name"
-              required
-            />
-            <label htmlFor="phone">Phone Number</label>
-            <input
-              id="phone"
-              value={phoneInput}
-              onChange={(event) => setPhoneInput(event.target.value)}
-              placeholder="e.g. +1 555 123 4567"
-              required
-            />
-            {formError ? <p className="form-error">{formError}</p> : null}
-            <button type="submit">Continue</button>
-          </form>
-        </div>
-      ) : null}
 
       <main
         ref={timelineRef}
         className={`timeline ${snapEnabled ? "snap-enabled" : "snap-disabled"}`}
       >
-        <section className="hero-section" data-scene-section data-scene-index={0} data-snap-section>
+        <section
+          className={`hero-section ${activeScene === 0 ? "is-active" : ""} ${heroAnimated ? "animated" : ""}`}
+          data-scene-section
+          data-scene-index={0}
+          data-snap-section
+        >
           <p className="eyebrow">Wedding Invitation</p>
-          <h1>Bride & Groom</h1>
+          <h1 className="hero-title">Bride & Groom</h1>
           <p className="sub">
             This page is a journey through our wedding celebrations, from
             pre-wedding rituals to the wedding ceremony itself.
@@ -509,13 +441,13 @@ export default function Home() {
             data-snap-section
             data-index={index}
             data-scene-index={index + 1}
-            className={`event-section event-${event.align} ${event.id === "wedding" ? "is-finale" : ""} ${visible.includes(index) ? "visible" : ""}`}
+            className={`event-section event-${event.align} ${event.id === "wedding" ? "is-finale" : ""} ${visible.includes(index) ? "visible" : ""} ${animatedSections.includes(index) ? "animated" : ""} ${activeScene === index + 1 ? "is-active" : ""}`}
           >
             <article className="event-copy">
               <p className="event-count">
                 {String(index + 1).padStart(2, "0")} / {String(events.length).padStart(2, "0")}
               </p>
-              <h2>{event.name}</h2>
+              <h2 className="event-title">{event.name}</h2>
               <p className="event-subtitle">{event.subtitle}</p>
               <p className="event-details">{event.details}</p>
               <p className="event-visual">{event.visualHint}</p>
@@ -539,15 +471,33 @@ export default function Home() {
           <div className="rsvp-shell">
             <p className="eyebrow">RSVP</p>
             <h2>Will you celebrate with us?</h2>
-            {guest ? (
-              <p className="rsvp-intro">
-                {guest.rsvp
-                  ? `Welcome back, ${guest.name}. Your current response is ${RSVP_LABEL[guest.rsvp]}.`
-                  : `Hi ${guest.name}, we would love to know if you can join us.`}
-              </p>
-            ) : (
-              <p className="rsvp-intro">Tell us your response below.</p>
-            )}
+            <p className="rsvp-intro">
+              Enter your details below and choose your RSVP. Using the same name
+              and phone will update your previous response.
+            </p>
+
+            <div className="rsvp-identity">
+              <label className="rsvp-field">
+                <span>Name</span>
+                <input
+                  type="text"
+                  value={nameInput}
+                  onChange={(event) => setNameInput(event.target.value)}
+                  placeholder="Enter your full name"
+                  autoComplete="name"
+                />
+              </label>
+              <label className="rsvp-field">
+                <span>Phone Number</span>
+                <input
+                  type="tel"
+                  value={phoneInput}
+                  onChange={(event) => setPhoneInput(event.target.value)}
+                  placeholder="Enter your phone number"
+                  autoComplete="tel"
+                />
+              </label>
+            </div>
 
             <div className="rsvp-options">
               {(["yes", "maybe", "no"] as RsvpChoice[]).map((choice) => (

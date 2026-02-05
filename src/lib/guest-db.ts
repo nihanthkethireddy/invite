@@ -25,6 +25,10 @@ function normalizePhone(phone: string) {
   return phone.replace(/[^\d+]/g, "").trim();
 }
 
+function normalizeName(name: string) {
+  return name.trim().replace(/\s+/g, " ").toLowerCase();
+}
+
 function nowIso() {
   return new Date().toISOString();
 }
@@ -90,12 +94,17 @@ export async function upsertGuestProfile(name: string, phone: string) {
     }
 
     const trimmedName = name.trim();
+    const normalizedName = normalizeName(trimmedName);
     if (!trimmedName) {
       throw new Error("Name is required");
     }
 
     const db = await readDb();
-    const existing = db.guests.find((guest) => guest.phone === normalized);
+    const existing =
+      db.guests.find(
+        (guest) =>
+          guest.phone === normalized && normalizeName(guest.name) === normalizedName
+      ) ?? db.guests.find((guest) => guest.phone === normalized);
 
     if (existing) {
       existing.name = trimmedName;
@@ -130,6 +139,7 @@ export async function saveRsvp(params: {
   return withWriteLock(async () => {
     const normalized = normalizePhone(params.phone);
     const trimmedName = params.name.trim();
+    const normalizedName = normalizeName(trimmedName);
 
     if (!normalized) {
       throw new Error("Invalid phone number");
@@ -140,7 +150,11 @@ export async function saveRsvp(params: {
     }
 
     const db = await readDb();
-    let guest = db.guests.find((item) => item.phone === normalized);
+    let guest =
+      db.guests.find(
+        (item) =>
+          item.phone === normalized && normalizeName(item.name) === normalizedName
+      ) ?? db.guests.find((item) => item.phone === normalized);
 
     if (!guest) {
       const timestamp = nowIso();
@@ -175,6 +189,7 @@ export async function adminAddOrUpdateGuest(params: {
   return withWriteLock(async () => {
     const normalized = normalizePhone(params.phone);
     const trimmedName = params.name.trim();
+    const normalizedName = normalizeName(trimmedName);
 
     if (!normalized) {
       throw new Error("Invalid phone number");
@@ -185,7 +200,11 @@ export async function adminAddOrUpdateGuest(params: {
     }
 
     const db = await readDb();
-    let guest = db.guests.find((item) => item.phone === normalized);
+    let guest =
+      db.guests.find(
+        (item) =>
+          item.phone === normalized && normalizeName(item.name) === normalizedName
+      ) ?? db.guests.find((item) => item.phone === normalized);
 
     if (!guest) {
       const timestamp = nowIso();

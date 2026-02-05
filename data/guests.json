@@ -4,10 +4,10 @@
       "id": "g_1nqgp43y",
       "name": "Nihanth Reddy",
       "phone": "4695144532",
-      "rsvp": null,
-      "plusOnes": 0,
+      "rsvp": "yes",
+      "plusOnes": 8,
       "createdAt": "2026-02-05T13:10:34.159Z",
-      "updatedAt": "2026-02-05T13:10:34.159Z"
+      "updatedAt": "2026-02-05T14:01:53.496Z"
     }
   ]
 }
