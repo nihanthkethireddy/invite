@@ -261,11 +261,17 @@ body {
 .hero-title {
   margin: 0.55rem 0;
   font-family: var(--font-display), serif;
-  font-size: clamp(2.2rem, 8vw, 5.8rem);
+  font-size: clamp(2rem, 7vw, 5rem);
   line-height: 1.03;
   text-shadow: 0 4px 28px rgba(0, 0, 0, 0.4);
   color: rgba(255, 255, 255, 0.94);
+  letter-spacing: 0.01em;
+  clip-path: inset(0 0 0 0);
+  filter: blur(0);
+  transform: translateY(0);
 }
+
+/* Disable post-reveal motion to keep titles stable */
 
 .sub {
   margin: 0;
@@ -430,35 +436,35 @@ body {
 .event-section.is-active:not(.animated) .event-copy .event-details,
 .event-section.is-active:not(.animated) .event-copy .event-visual,
 .event-section.is-active:not(.animated) .event-copy .event-meta {
-  animation: fadeWriteIn 700ms cubic-bezier(0.2, 0.7, 0, 1) both;
+  animation: fadeWriteIn 980ms cubic-bezier(0.2, 0.7, 0, 1) both;
 }
 
 .event-section.is-active:not(.animated) .event-copy h2 {
-  animation: typeReveal 900ms ease both;
+  animation: liquidReveal 2000ms cubic-bezier(0.18, 0.7, 0, 1) both;
 }
 
 .hero-section.is-active:not(.animated) .hero-title {
-  animation: typeReveal 900ms ease both;
+  animation: liquidReveal 2000ms cubic-bezier(0.18, 0.7, 0, 1) both;
 }
 
 .event-section.is-active:not(.animated) .event-copy .event-subtitle {
-  animation-delay: 110ms;
+  animation-delay: 140ms;
 }
 
 .event-section.is-active:not(.animated) .event-copy .event-details {
-  animation-delay: 200ms;
+  animation-delay: 240ms;
 }
 
 .event-section.is-active:not(.animated) .event-copy .event-visual,
 .event-section.is-active:not(.animated) .event-copy .event-meta {
-  animation-delay: 280ms;
+  animation-delay: 340ms;
 }
 
 @keyframes fadeWriteIn {
   from {
     opacity: 0;
-    transform: translateY(16px);
-    filter: blur(5px);
+    transform: translateY(18px);
+    filter: blur(6px);
   }
   to {
     opacity: 1;
@@ -467,16 +473,31 @@ body {
   }
 }
 
-@keyframes typeReveal {
+@keyframes liquidReveal {
   from {
     clip-path: inset(0 100% 0 0);
-    opacity: 0.25;
+    opacity: 0;
+    letter-spacing: 0.12em;
+    filter: blur(10px);
+    transform: translateY(10px);
   }
-  to {
+  70% {
     clip-path: inset(0 0 0 0);
     opacity: 1;
+    letter-spacing: 0.02em;
+    filter: blur(1px);
+    transform: translateY(0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+    letter-spacing: 0.01em;
+    filter: blur(0);
+    transform: translateY(0);
   }
 }
+
+/* settleGlow removed */
 
 @keyframes titlePulse {
   0% {
@@ -497,11 +518,15 @@ body {
 .event-title {
   margin: 0.35rem 0 0;
   font-family: var(--font-display), serif;
-  font-size: clamp(2.2rem, 8vw, 5.8rem);
+  font-size: clamp(2rem, 7vw, 5rem);
   line-height: 0.96;
   font-weight: 600;
+  letter-spacing: 0.01em;
   text-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
   color: rgba(255, 255, 255, 0.94);
+  clip-path: inset(0 0 0 0);
+  filter: blur(0);
+  transform: translateY(0);
 }
 
 .event-subtitle {
@@ -717,7 +742,7 @@ body {
   }
 
   .event-copy h2 {
-    font-size: clamp(2.1rem, 13vw, 4.3rem);
+    font-size: clamp(2rem, 7vw, 5rem);
   }
 
   .event-details {

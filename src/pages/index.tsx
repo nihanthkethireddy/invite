@@ -253,7 +253,7 @@ export default function Home() {
               setAnimatedSections((prev) =>
                 prev.includes(index) ? prev : [...prev, index].sort((a, b) => a - b)
               );
-            }, 900);
+            }, 2000);
           }
         });
       },
@@ -280,7 +280,7 @@ export default function Home() {
 
       if (closestScene === 0 && !heroAnimatedRef.current) {
         heroAnimatedRef.current = true;
-        window.setTimeout(() => setHeroAnimated(true), 900);
+        window.setTimeout(() => setHeroAnimated(true), 2000);
       }
 
       const maxScroll = Math.max(1, timeline.scrollHeight - timeline.clientHeight);
