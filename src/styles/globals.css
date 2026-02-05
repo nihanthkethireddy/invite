@@ -334,10 +334,17 @@ body {
   z-index: 2;
   height: 100vh;
   overflow-y: auto;
-  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
+}
+
+.timeline.snap-disabled {
+  scroll-snap-type: none;
+}
+
+.timeline.snap-enabled {
+  scroll-snap-type: y mandatory;
 }
 
 .event-section {

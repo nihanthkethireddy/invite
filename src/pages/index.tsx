@@ -157,6 +157,7 @@ const STORAGE_KEY = "invite_guest_phone";
 
 export default function Home() {
   const [activeScene, setActiveScene] = useState(0);
+  const [snapEnabled, setSnapEnabled] = useState(false);
   const [visible, setVisible] = useState<number[]>([]);
   const inviteRef = useRef<HTMLDivElement | null>(null);
   const timelineRef = useRef<HTMLElement | null>(null);
@@ -172,6 +173,58 @@ export default function Home() {
   const [savingRsvp, setSavingRsvp] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
   const [formError, setFormError] = useState("");
+
+  useEffect(() => {
+    const timeline = timelineRef.current;
+    if (!timeline) {
+      return;
+    }
+
+    const previous = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+
+    const resetToTop = () => {
+      timeline.scrollTop = 0;
+    };
+
+    resetToTop();
+    window.requestAnimationFrame(resetToTop);
+
+    return () => {
+      window.history.scrollRestoration = previous;
+    };
+  }, []);
+
+  useEffect(() => {
+    const timeline = timelineRef.current;
+    if (!timeline) {
+      return;
+    }
+
+    const enableSnap = () => {
+      setSnapEnabled(true);
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      const keys = ["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Space"];
+      if (keys.includes(event.code)) {
+        enableSnap();
+      }
+    };
+
+    timeline.addEventListener("wheel", enableSnap, { passive: true, once: true });
+    timeline.addEventListener("touchmove", enableSnap, {
+      passive: true,
+      once: true,
+    });
+    window.addEventListener("keydown", onKeyDown, { once: true });
+
+    return () => {
+      timeline.removeEventListener("wheel", enableSnap);
+      timeline.removeEventListener("touchmove", enableSnap);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, []);
 
   useEffect(() => {
     const timeline = timelineRef.current;
@@ -434,7 +487,10 @@ export default function Home() {
         </div>
       ) : null}
 
-      <main ref={timelineRef} className="timeline">
+      <main
+        ref={timelineRef}
+        className={`timeline ${snapEnabled ? "snap-enabled" : "snap-disabled"}`}
+      >
         <section className="hero-section" data-scene-section data-scene-index={0} data-snap-section>
           <p className="eyebrow">Wedding Invitation</p>
           <h1>Bride & Groom</h1>
