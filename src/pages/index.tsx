@@ -1,5 +1,11 @@
 import { Cinzel, Manrope } from "next/font/google";
-import { type CSSProperties, type FormEvent, useEffect, useState } from "react";
+import {
+  type CSSProperties,
+  type FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 const displayFont = Cinzel({
   subsets: ["latin"],
@@ -151,8 +157,9 @@ const STORAGE_KEY = "invite_guest_phone";
 
 export default function Home() {
   const [activeScene, setActiveScene] = useState(0);
-  const [activeZoom, setActiveZoom] = useState(1.08);
   const [visible, setVisible] = useState<number[]>([]);
+  const inviteRef = useRef<HTMLDivElement | null>(null);
+  const timelineRef = useRef<HTMLElement | null>(null);
 
   const [guest, setGuest] = useState<Guest | null>(null);
   const [nameInput, setNameInput] = useState("");
@@ -167,14 +174,19 @@ export default function Home() {
   const [formError, setFormError] = useState("");
 
   useEffect(() => {
+    const timeline = timelineRef.current;
+    if (!timeline) {
+      return;
+    }
+
     const eventSections = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-event-section]")
+      timeline.querySelectorAll<HTMLElement>("[data-event-section]")
     );
     const sceneSections = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-scene-section]")
+      timeline.querySelectorAll<HTMLElement>("[data-scene-section]")
     );
 
-    const observer = new IntersectionObserver(
+    const visibleObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) {
@@ -186,56 +198,51 @@ export default function Home() {
           );
         });
       },
-      { threshold: 0.28 }
+      { threshold: 0.28, root: timeline }
     );
 
-    eventSections.forEach((section) => observer.observe(section));
+    eventSections.forEach((section) => visibleObserver.observe(section));
 
-    let ticking = false;
-    const updateActiveFromScroll = () => {
-      const viewCenter = window.innerHeight * 0.52;
-      let closestIndex = 0;
+    const updateSceneMotion = () => {
+      const viewCenter = timeline.scrollTop + timeline.clientHeight * 0.52;
+      let closestScene = 0;
       let closestDistance = Number.POSITIVE_INFINITY;
 
       sceneSections.forEach((section, index) => {
-        const rect = section.getBoundingClientRect();
-        const sectionCenter = rect.top + rect.height / 2;
+        const sectionCenter = section.offsetTop + section.offsetHeight / 2;
         const distance = Math.abs(sectionCenter - viewCenter);
         if (distance < closestDistance) {
           closestDistance = distance;
-          closestIndex = index;
+          closestScene = index;
         }
       });
 
-      setActiveScene(closestIndex);
-      const maxScroll = Math.max(
-        1,
-        document.documentElement.scrollHeight - window.innerHeight
-      );
-      const globalProgress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-      const zoom = 1.04 + globalProgress * 0.24;
-      setActiveZoom(zoom);
+      setActiveScene(closestScene);
+
+      const maxScroll = Math.max(1, timeline.scrollHeight - timeline.clientHeight);
+      const progress = Math.min(1, Math.max(0, timeline.scrollTop / maxScroll));
+      inviteRef.current?.style.setProperty("--active-zoom", `${1.04 + progress * 0.24}`);
+      inviteRef.current?.style.setProperty("--world-shift", `${progress * 100}px`);
     };
 
+    let ticking = false;
     const onScroll = () => {
       if (ticking) {
         return;
       }
       ticking = true;
       window.requestAnimationFrame(() => {
-        updateActiveFromScroll();
+        updateSceneMotion();
         ticking = false;
       });
     };
 
-    updateActiveFromScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    updateSceneMotion();
+    timeline.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      visibleObserver.disconnect();
+      timeline.removeEventListener("scroll", onScroll);
     };
   }, []);
 
@@ -358,7 +365,17 @@ export default function Home() {
   };
 
   return (
-    <div className={`${displayFont.variable} ${bodyFont.variable} invite-page`} style={{ "--active-zoom": activeZoom } as CSSProperties}>
+    <div
+      ref={inviteRef}
+      className={`${displayFont.variable} ${bodyFont.variable} invite-page`}
+      style={
+        {
+          "--active-zoom": 1.08,
+          "--world-shift": "0px",
+          "--scene-hue": `${activeScene * 8}deg`,
+        } as CSSProperties
+      }
+    >
       <div className="bg-layer-stack" aria-hidden="true">
         {scenes.map((scene, index) => (
           <div
@@ -374,6 +391,16 @@ export default function Home() {
             }
           />
         ))}
+      </div>
+      <div className="world-atmosphere" aria-hidden="true">
+        <span className="veil veil-a" />
+        <span className="veil veil-b" />
+        <span className="orb orb-a" />
+        <span className="orb orb-b" />
+        <span className="orb orb-c" />
+        <span className="spark spark-a" />
+        <span className="spark spark-b" />
+        <span className="spark spark-c" />
       </div>
 
       {showGuestModal && !loadingGuest ? (
@@ -407,8 +434,8 @@ export default function Home() {
         </div>
       ) : null}
 
-      <main className="timeline">
-        <section className="hero-section" data-scene-section>
+      <main ref={timelineRef} className="timeline">
+        <section className="hero-section" data-scene-section data-scene-index={0} data-snap-section>
           <p className="eyebrow">Wedding Invitation</p>
           <h1>Bride & Groom</h1>
           <p className="sub">
@@ -423,6 +450,7 @@ export default function Home() {
             key={event.id}
             data-event-section
             data-scene-section
+            data-snap-section
             data-index={index}
             data-scene-index={index + 1}
             className={`event-section event-${event.align} ${event.id === "wedding" ? "is-finale" : ""} ${visible.includes(index) ? "visible" : ""}`}
@@ -451,7 +479,7 @@ export default function Home() {
           </section>
         ))}
 
-        <section className="rsvp-section">
+        <section className="rsvp-section" data-snap-section>
           <div className="rsvp-shell">
             <p className="eyebrow">RSVP</p>
             <h2>Will you celebrate with us?</h2>

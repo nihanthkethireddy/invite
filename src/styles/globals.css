@@ -6,15 +6,15 @@
 
 html,
 body {
+  height: 100%;
   margin: 0;
-  scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-body), "Segoe UI", sans-serif;
   background: #07070b;
   color: #fff;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .invite-page {
@@ -33,7 +33,7 @@ body {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 1.1s ease;
+  transition: opacity 580ms ease;
 }
 
 .bg-layer::before,
@@ -49,7 +49,7 @@ body {
   background-position: var(--event-focus);
   transform: scale(var(--active-zoom, 1.04));
   filter: contrast(1.06) saturate(1.1);
-  transition: transform 360ms ease-out;
+  transition: transform 220ms linear;
 }
 
 .bg-layer::after {
@@ -58,6 +58,8 @@ body {
     radial-gradient(circle at 80% 76%, color-mix(in srgb, var(--event-color), #000 8%) 0%, transparent 45%),
     linear-gradient(135deg, color-mix(in srgb, var(--event-color), #000 22%), rgba(6, 6, 10, 0.74));
   mix-blend-mode: multiply;
+  opacity: 0.92;
+  transition: opacity 520ms ease;
 }
 
 .bg-layer[data-event-id="mehendi"]::after {
@@ -74,6 +76,142 @@ body {
 
 .bg-layer.active {
   opacity: 1;
+}
+.bg-layer.active::after {
+  opacity: 1;
+}
+
+.world-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  filter: hue-rotate(var(--scene-hue, 0deg)) saturate(1.18);
+}
+
+.veil {
+  position: absolute;
+  width: 120vmax;
+  height: 120vmax;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.18;
+  filter: blur(42px);
+  background: conic-gradient(
+    from 30deg,
+    rgba(255, 223, 154, 0.6),
+    rgba(255, 129, 173, 0.22),
+    rgba(138, 109, 255, 0.3),
+    rgba(255, 223, 154, 0.6)
+  );
+  animation: spinVeil 28s linear infinite;
+}
+
+.veil-a {
+  animation-duration: 24s;
+}
+
+.veil-b {
+  opacity: 0.12;
+  animation-direction: reverse;
+  animation-duration: 35s;
+}
+
+.orb {
+  position: absolute;
+  width: clamp(280px, 33vw, 620px);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  filter: blur(22px);
+  opacity: 0.34;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 238, 180, 0.9), rgba(255, 238, 180, 0));
+  animation: floatOrb 12s ease-in-out infinite alternate;
+}
+
+.orb-a {
+  top: -8%;
+  left: -4%;
+}
+
+.orb-b {
+  bottom: -16%;
+  right: -8%;
+  animation-duration: 15s;
+  animation-delay: -3s;
+}
+
+.orb-c {
+  top: 36%;
+  right: 18%;
+  width: clamp(130px, 16vw, 260px);
+  opacity: 0.24;
+  animation-duration: 10s;
+  animation-delay: -6s;
+}
+
+.spark {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255, 241, 206, 0.88);
+  box-shadow: 0 0 20px rgba(255, 217, 120, 0.9);
+  opacity: 0;
+  animation: driftSpark 7s ease-in-out infinite;
+}
+
+.spark-a {
+  left: 12%;
+  bottom: 18%;
+}
+
+.spark-b {
+  right: 16%;
+  bottom: 12%;
+  animation-delay: -2.4s;
+}
+
+.spark-c {
+  right: 34%;
+  bottom: 24%;
+  animation-delay: -4.6s;
+}
+
+@keyframes floatOrb {
+  0% {
+    transform: translate3d(0, calc(var(--world-shift, 0px) * -0.06), 0) scale(1);
+  }
+  100% {
+    transform: translate3d(36px, calc(-34px + var(--world-shift, 0px) * -0.06), 0)
+      scale(1.12);
+  }
+}
+
+@keyframes driftSpark {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.7);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate3d(24px, -120px, 0) scale(1.1);
+    opacity: 0;
+  }
+}
+
+@keyframes spinVeil {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) scale(1.08);
+  }
 }
 
 .eyebrow {
@@ -102,13 +240,15 @@ body {
 }
 
 .hero-section {
-  min-height: 90vh;
+  min-height: 100vh;
   display: grid;
   align-content: center;
   gap: 0.6rem;
   padding: clamp(1.4rem, 6vw, 4rem);
   position: relative;
   z-index: 2;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .hero-note {
@@ -192,7 +332,12 @@ body {
 .timeline {
   position: relative;
   z-index: 2;
+  height: 100vh;
+  overflow-y: auto;
   scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .event-section {
@@ -222,14 +367,27 @@ body {
   transform: translateY(40px);
   opacity: 0;
   filter: blur(8px);
-  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0, 1), opacity 0.8s ease,
-    filter 0.8s ease;
+  transition: transform 0.58s cubic-bezier(0.2, 0.7, 0, 1), opacity 0.55s ease,
+    filter 0.55s ease;
 }
 
 .event-section.visible .event-copy {
   transform: translateY(0);
   opacity: 1;
   filter: blur(0);
+}
+
+.event-section.visible .event-copy h2 {
+  animation: titlePulse 2.2s ease-in-out infinite alternate;
+}
+
+@keyframes titlePulse {
+  0% {
+    text-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  }
+  100% {
+    text-shadow: 0 14px 36px rgba(255, 224, 160, 0.45);
+  }
 }
 
 .event-count {
@@ -300,6 +458,7 @@ body {
   place-items: center;
   padding: 4rem 1rem 5rem;
   scroll-snap-align: start;
+  scroll-snap-stop: always;
   background: linear-gradient(180deg, rgba(8, 8, 11, 0.15), rgba(8, 8, 11, 0.55));
 }
 
