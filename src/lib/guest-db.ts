@@ -18,7 +18,9 @@ type GuestDb = {
   guests: Guest[];
 };
 
-const DB_PATH = path.join(process.cwd(), "data", "guests.json");
+const IS_VERCEL = process.env.VERCEL === "1";
+const SOURCE_DB_PATH = path.join(process.cwd(), "data", "guests.json");
+const DB_PATH = IS_VERCEL ? path.join("/tmp", "guests.json") : SOURCE_DB_PATH;
 
 let writeQueue: Promise<unknown> = Promise.resolve();
 
@@ -52,7 +54,18 @@ async function readDb(): Promise<GuestDb> {
     return parsed;
   } catch {
     await fs.mkdir(path.dirname(DB_PATH), { recursive: true });
-    const seed = { guests: [] };
+    let seed: GuestDb = { guests: [] };
+
+    try {
+      const rawSeed = await fs.readFile(SOURCE_DB_PATH, "utf8");
+      const parsed = JSON.parse(rawSeed) as GuestDb;
+      if (Array.isArray(parsed.guests)) {
+        seed = parsed;
+      }
+    } catch {
+      // No seed file available; start empty.
+    }
+
     await fs.writeFile(DB_PATH, JSON.stringify(seed, null, 2), "utf8");
     return seed;
   }

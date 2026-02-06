@@ -659,6 +659,11 @@ body {
   letter-spacing: 0.08em;
 }
 
+.rsvp-submit--inline {
+  margin-top: 0;
+  white-space: nowrap;
+}
+
 .rsvp-submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -734,13 +739,24 @@ body {
   cursor: not-allowed;
 }
 
-.plusones {
+.plusones-row {
   margin-top: 1.3rem;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.plusones {
+  margin-top: 0;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   gap: 0.7rem;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .plusones p {
@@ -1110,7 +1126,7 @@ body {
   }
 
   .plusones {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
   }
 }

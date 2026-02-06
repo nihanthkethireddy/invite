@@ -52,7 +52,7 @@ type Guest = {
 };
 
 const RSVP_LABEL: Record<RsvpChoice, string> = {
-  yes: "Yes, with joy",
+  yes: "Yes!",
   no: "Will Miss It",
   maybe: "Hopefully",
 };
@@ -504,35 +504,37 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="plusones">
-              <p>Additional guests</p>
-              <div className="plusones-controls">
-                <button
-                  type="button"
-                  onClick={() => handlePlusOnes(-1)}
-                  disabled={savingRsvp || rsvpChoice === "no" || plusOnes <= 0}
-                >
-                  -
-                </button>
-                <span>{rsvpChoice === "no" ? 0 : plusOnes}</span>
-                <button
-                  type="button"
-                  onClick={() => handlePlusOnes(1)}
-                  disabled={savingRsvp || rsvpChoice === "no" || plusOnes >= 10}
-                >
-                  +
-                </button>
+            <div className="plusones-row">
+              <div className="plusones">
+                <p>Additional guests</p>
+                <div className="plusones-controls">
+                  <button
+                    type="button"
+                    onClick={() => handlePlusOnes(-1)}
+                    disabled={savingRsvp || rsvpChoice === "no" || plusOnes <= 0}
+                  >
+                    -
+                  </button>
+                  <span>{rsvpChoice === "no" ? 0 : plusOnes}</span>
+                  <button
+                    type="button"
+                    onClick={() => handlePlusOnes(1)}
+                    disabled={savingRsvp || rsvpChoice === "no" || plusOnes >= 10}
+                  >
+                    +
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <button
-              type="button"
-              className="rsvp-submit"
-              onClick={handleSubmitRsvp}
-              disabled={savingRsvp}
-            >
-              Submit
-            </button>
+              <button
+                type="button"
+                className="rsvp-submit rsvp-submit--inline"
+                onClick={handleSubmitRsvp}
+                disabled={savingRsvp}
+              >
+                Submit
+              </button>
+            </div>
 
             <p className="rsvp-note">
               We look forward to sharing these precious moments with you and celebrating together with love, laughter, and joy.

@@ -271,10 +271,9 @@ export default function WeddingPage() {
         >
           <div className="rsvp-shell">
             <p className="eyebrow">RSVP</p>
-            <h2>Will you celebrate with us?</h2>
+            <h4>Your presence at our wedding means more to us than words can express. As we prepare for these beautiful celebrations, we kindly request you to let us know your availability so we can make the arrangements comfortable and memorable for everyone.</h4>
             <p className="rsvp-intro">
-              Enter your details below and choose your RSVP. Using the same name
-              and phone will update your previous response.
+              Kindly respond at your convenience
             </p>
 
             <div className="rsvp-identity">
@@ -301,7 +300,7 @@ export default function WeddingPage() {
             </div>
 
             <div className="rsvp-options">
-              {(["yes", "maybe", "no"] as const).map((choice) => (
+              {(["yes", "no", "maybe"] as const).map((choice) => (
                 <button
                   key={choice}
                   type="button"
@@ -309,39 +308,44 @@ export default function WeddingPage() {
                   onClick={() => handleSelectRsvp(choice)}
                   disabled={savingRsvp}
                 >
-                  {choice === "yes" ? "Yes, with joy" : choice === "no" ? "Sorry, can't make it" : "Maybe"}
+                  {choice === "yes" ? "Yes!" : choice === "no" ? "Will Miss It" : "Hopefully"}
                 </button>
               ))}
             </div>
 
-            <div className="plusones">
-              <p>Additional guests</p>
-              <div className="plusones-controls">
-                <button
-                  type="button"
-                  onClick={() => handlePlusOnes(-1)}
-                  disabled={savingRsvp || rsvpChoice === "no" || plusOnes <= 0}
-                >
-                  -
-                </button>
-                <span>{rsvpChoice === "no" ? 0 : plusOnes}</span>
-                <button
-                  type="button"
-                  onClick={() => handlePlusOnes(1)}
-                  disabled={savingRsvp || rsvpChoice === "no" || plusOnes >= 10}
-                >
-                  +
-                </button>
+            <div className="plusones-row">
+              <div className="plusones">
+                <p>Additional guests</p>
+                <div className="plusones-controls">
+                  <button
+                    type="button"
+                    onClick={() => handlePlusOnes(-1)}
+                    disabled={savingRsvp || rsvpChoice === "no" || plusOnes <= 0}
+                  >
+                    -
+                  </button>
+                  <span>{rsvpChoice === "no" ? 0 : plusOnes}</span>
+                  <button
+                    type="button"
+                    onClick={() => handlePlusOnes(1)}
+                    disabled={savingRsvp || rsvpChoice === "no" || plusOnes >= 10}
+                  >
+                    +
+                  </button>
+                </div>
               </div>
+              <button
+                type="button"
+                className="rsvp-submit rsvp-submit--inline"
+                onClick={handleSubmitRsvp}
+                disabled={savingRsvp}
+              >
+                Submit
+              </button>
             </div>
-            <button
-              type="button"
-              className="rsvp-submit"
-              onClick={handleSubmitRsvp}
-              disabled={savingRsvp}
-            >
-              Submit
-            </button>
+            <p className="rsvp-note">
+              We look forward to sharing these precious moments with you and celebrating together with love, laughter, and joy.
+            </p>
             {statusMessage ? <p className="status-msg">{statusMessage}</p> : null}
           </div>
         </section>
