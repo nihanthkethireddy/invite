@@ -18,7 +18,7 @@ type GuestDb = {
   guests: Guest[];
 };
 
-const IS_VERCEL = process.env.VERCEL === "1";
+const IS_VERCEL = process.env.VERCEL === '1';
 const SOURCE_DB_PATH = path.join(process.cwd(), "data", "guests.json");
 const DB_PATH = IS_VERCEL ? path.join("/tmp", "guests.json") : SOURCE_DB_PATH;
 
