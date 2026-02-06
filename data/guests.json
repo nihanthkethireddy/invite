@@ -1,34 +1,4 @@
 {
   "guests": [
-    {
-      "id": "g_62t2yrim",
-      "name": "niha",
-      "phone": "4695144532",
-      "rsvp": "yes",
-      "plusOnes": 6,
-      "scope": "wedding",
-      "createdAt": "2026-02-06T16:10:05.165Z",
-      "updatedAt": "2026-02-06T16:12:03.640Z"
-    },
-    {
-      "id": "g_hn7la8sd",
-      "name": "hgjjj",
-      "phone": "4444444444",
-      "rsvp": "maybe",
-      "plusOnes": 2,
-      "scope": "wedding",
-      "createdAt": "2026-02-06T16:12:57.364Z",
-      "updatedAt": "2026-02-06T16:13:03.006Z"
-    },
-    {
-      "id": "g_f94misrg",
-      "name": "kgkgkg sgsrg stgtr es gr gd gse gs er gse rg resg s g ser g se rg er g serg. srg. esr gs er g ser gse g s. gse. sg 5",
-      "phone": "3333333333",
-      "rsvp": "no",
-      "plusOnes": 0,
-      "scope": "wedding",
-      "createdAt": "2026-02-06T16:14:05.727Z",
-      "updatedAt": "2026-02-06T16:14:05.727Z"
-    }
   ]
 }
