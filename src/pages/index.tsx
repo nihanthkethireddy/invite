@@ -147,6 +147,7 @@ export default function Home() {
   const timelineRef = useRef<HTMLElement | null>(null);
   const animatedRef = useRef<Set<number>>(new Set());
   const heroAnimatedRef = useRef(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const [nameInput, setNameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
@@ -295,6 +296,35 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) {
+      return;
+    }
+
+    const tryPlay = async () => {
+      try {
+        await audio.play();
+      } catch {
+        // Autoplay may be blocked until user interaction.
+      }
+    };
+
+    void tryPlay();
+
+    const onFirstInteract = () => {
+      void tryPlay();
+    };
+
+    window.addEventListener("pointerdown", onFirstInteract, { once: true });
+    window.addEventListener("keydown", onFirstInteract, { once: true });
+
+    return () => {
+      window.removeEventListener("pointerdown", onFirstInteract);
+      window.removeEventListener("keydown", onFirstInteract);
+    };
+  }, []);
+
   const applyGuest = (nextGuest: Guest) => {
     setRsvpChoice(nextGuest.rsvp);
     setPlusOnes(nextGuest.plusOnes);
@@ -370,6 +400,15 @@ export default function Home() {
         } as CSSProperties
       }
     >
+      <audio
+        ref={audioRef}
+        src="/audio.mp3"
+        preload="auto"
+        autoPlay
+        loop
+        playsInline
+        aria-hidden="true"
+      />
       <div className="bg-layer-stack" aria-hidden="true">
         {scenes.map((scene, index) => (
           <div
@@ -414,7 +453,7 @@ export default function Home() {
           data-snap-section
         >
           <p className="eyebrow">Wedding Invitation</p>
-          <h1 className="hero-title">Bride & Groom</h1>
+          <h1 className="hero-title">Nikitha & Sathish</h1>
           <p className="sub">
             With joyful hearts and endless gratitude, we invite you to celebrate one of the most beautiful chapters of our lives. This wedding is not just the union of two souls, but the coming together of families, laughter, traditions, and love that will last a lifetime.
           </p>

@@ -40,6 +40,7 @@ export default function WeddingPage() {
   const [animatedSections, setAnimatedSections] = useState<number[]>([]);
   const timelineRef = useRef<HTMLElement | null>(null);
   const animatedRef = useRef<Set<number>>(new Set());
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const [nameInput, setNameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
@@ -152,6 +153,35 @@ export default function WeddingPage() {
     };
   }, []);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) {
+      return;
+    }
+
+    const tryPlay = async () => {
+      try {
+        await audio.play();
+      } catch {
+        // Autoplay may be blocked until user interaction.
+      }
+    };
+
+    void tryPlay();
+
+    const onFirstInteract = () => {
+      void tryPlay();
+    };
+
+    window.addEventListener("pointerdown", onFirstInteract, { once: true });
+    window.addEventListener("keydown", onFirstInteract, { once: true });
+
+    return () => {
+      window.removeEventListener("pointerdown", onFirstInteract);
+      window.removeEventListener("keydown", onFirstInteract);
+    };
+  }, []);
+
   const saveRsvp = async (choice: "yes" | "no" | "maybe", nextPlusOnes: number) => {
     const trimmedName = nameInput.trim();
     const trimmedPhone = phoneInput.trim();
@@ -211,6 +241,15 @@ export default function WeddingPage() {
 
   return (
     <div className={`${displayFont.variable} ${bodyFont.variable} wedding-page`}>
+      <audio
+        ref={audioRef}
+        src="/audio.mp3"
+        preload="auto"
+        autoPlay
+        loop
+        playsInline
+        aria-hidden="true"
+      />
       <div className="wedding-slider" aria-hidden="true">
         <div className="wedding-track">
           {slides.concat(slides).map((slide, index) => (
@@ -234,7 +273,7 @@ export default function WeddingPage() {
           data-wedding-section
         >
           <p className="eyebrow">Wedding</p>
-          <h1 className="hero-title">Bride & Groom</h1>
+          <h1 className="hero-title">Nikitha & Sathish</h1>
           <p className="sub">
             The wedding day is here. Scroll to see the sacred moment and share
             your RSVP.
