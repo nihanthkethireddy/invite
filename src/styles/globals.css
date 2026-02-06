@@ -478,14 +478,14 @@ body {
     clip-path: inset(0 100% 0 0);
     opacity: 0;
     letter-spacing: 0.12em;
-    filter: blur(10px);
-    transform: translateY(10px);
+    filter: blur(0);
+    transform: translateY(0);
   }
   70% {
     clip-path: inset(0 0 0 0);
     opacity: 1;
     letter-spacing: 0.02em;
-    filter: blur(1px);
+    filter: blur(0);
     transform: translateY(0);
   }
   100% {

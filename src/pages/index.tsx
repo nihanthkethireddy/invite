@@ -63,7 +63,7 @@ const events: EventItem[] = [
     name: "Haldi",
     subtitle: "March 05 | 8:00 AM<br/><a href='https://maps.app.goo.gl/y1AsV6Sv8YDu9wnr8'>BLISS</a>",
     details:
-      "The celebrations begin with the vibrant Haldi ceremony, filled with laughter, love, and golden hues of joy. Join us as we bless the couple with turmeric, happiness, and warmth.",
+      "The celebrations begin with the vibrant Haldi ceremony, filled with laughter, love, and golden hues of joy.",
     visualHint:
      "Dress Code<br/>Color Theme: Yellow<br/>Women: Sheraras, Kurtis, Kalis, or Lehengas<br/>Men: Kurtha with Pajamas",
     palette: "#f7bf1d",
@@ -88,7 +88,7 @@ const events: EventItem[] = [
     name: "Pellikoduku",
     subtitle: "March 06 | 9:00 AM<br/><a href='https://maps.app.goo.gl/y1AsV6Sv8YDu9wnr8'>BLISS</a>",
     details:
-      "A joyful and sacred ritual celebrating the groom as he prepares to step into a new chapter of life. Surrounded by love, laughter, and blessings, this ceremony is filled with tradition, warmth, and beautiful moments shared with family and friends. Join us as we celebrate the groom and bless him for a lifetime of happiness, strength, and togetherness.",
+      "A joyful and sacred ritual celebrating the groom as he prepares to step into a new chapter of life.",
     visualHint: "Dress Code<br/>Traditional Attire",
     palette: "#8f3f58",
     focus: "48% 20%",
