@@ -216,7 +216,7 @@ export default function AdminPage() {
               <strong>{allSummary.totalRsvps}</strong>
             </div>
             <div>
-              <span>Estimated Attendees</span>
+              <span>Attendees</span>
               <strong>{allSummary.totalPeople}</strong>
             </div>
           </div>
@@ -251,7 +251,7 @@ export default function AdminPage() {
               <strong>{weddingSummary.totalRsvps}</strong>
             </div>
             <div>
-              <span>Estimated Attendees</span>
+              <span>Attendees</span>
               <strong>{weddingSummary.totalPeople}</strong>
             </div>
           </div>
