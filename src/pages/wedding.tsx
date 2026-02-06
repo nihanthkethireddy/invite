@@ -172,6 +172,7 @@ export default function WeddingPage() {
           phone: trimmedPhone,
           rsvp: choice,
           plusOnes: choice === "no" ? 0 : nextPlusOnes,
+          scope: "wedding",
         }),
       });
 
@@ -193,16 +194,19 @@ export default function WeddingPage() {
     const nextPlusOnes = choice === "no" ? 0 : plusOnes;
     setRsvpChoice(choice);
     setPlusOnes(nextPlusOnes);
-    void saveRsvp(choice, nextPlusOnes);
   };
 
   const handlePlusOnes = (delta: number) => {
     const nextValue = Math.max(0, Math.min(10, plusOnes + delta));
     setPlusOnes(nextValue);
+  };
 
-    if (rsvpChoice && rsvpChoice !== "no") {
-      void saveRsvp(rsvpChoice, nextValue);
+  const handleSubmitRsvp = () => {
+    if (!rsvpChoice) {
+      setStatusMessage("Please choose an RSVP option first.");
+      return;
     }
+    void saveRsvp(rsvpChoice, plusOnes);
   };
 
   return (
@@ -311,7 +315,7 @@ export default function WeddingPage() {
             </div>
 
             <div className="plusones">
-              <p>How many +1 are you bringing?</p>
+              <p>Additional guests</p>
               <div className="plusones-controls">
                 <button
                   type="button"
@@ -330,11 +334,14 @@ export default function WeddingPage() {
                 </button>
               </div>
             </div>
-
-            <p className="rsvp-note">
-              One RSVP per phone number. Selecting a different option updates your
-              previous response.
-            </p>
+            <button
+              type="button"
+              className="rsvp-submit"
+              onClick={handleSubmitRsvp}
+              disabled={savingRsvp}
+            >
+              Submit
+            </button>
             {statusMessage ? <p className="status-msg">{statusMessage}</p> : null}
           </div>
         </section>

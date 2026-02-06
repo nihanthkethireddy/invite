@@ -20,12 +20,15 @@ export default async function handler(
           ? rsvpRaw
           : null;
       const plusOnes = Number(req.body?.plusOnes ?? 0);
+      const scopeRaw = String(req.body?.scope ?? "all");
+      const scope = scopeRaw === "wedding" ? "wedding" : "all";
 
       const guest = await adminAddOrUpdateGuest({
         name,
         phone,
         rsvp,
         plusOnes,
+        scope,
       });
 
       return res.status(200).json({ guest });

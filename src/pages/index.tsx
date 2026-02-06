@@ -72,6 +72,18 @@ const events: EventItem[] = [
     image: haldi.src,
   },
   {
+    id: "mehendi/sangeeth",
+    name: "Mehendi/Sangeeth",
+    subtitle: "March 05 | 6:30 PM<br/><a href='https://maps.app.goo.gl/y1AsV6Sv8YDu9wnr8'>BLISS</a>",
+    details:
+      "An evening of music, dance, colors, and celebration. Let’s sing, dance, and celebrate love together as hands are adorned with mehendi and hearts with happiness.",
+    visualHint: "Dress Code<br/>Anything Shimmery & Festive",
+    palette: "#5336bf",
+    focus: "50% 36%",
+    align: "left",
+    image: sangeeth.src,
+  },
+  {
     id: "pellikuthuru",
     name: "Pellikuthuru",
     subtitle: "March 06 | 9:00 AM<br/><a href='https://maps.app.goo.gl/y1AsV6Sv8YDu9wnr8'>BLISS</a>",
@@ -94,18 +106,6 @@ const events: EventItem[] = [
     focus: "48% 20%",
     align: "right",
     image: groom.src,
-  },
-  {
-    id: "mehendi/sangeeth",
-    name: "Mehendi/Sangeeth",
-    subtitle: "March 05 | 6:30 PM<br/><a href='https://maps.app.goo.gl/y1AsV6Sv8YDu9wnr8'>BLISS</a>",
-    details:
-      "An evening of music, dance, colors, and celebration. Let’s sing, dance, and celebrate love together as hands are adorned with mehendi and hearts with happiness.",
-    visualHint: "Dress Code<br/>Anything Shimmery & Festive",
-    palette: "#5336bf",
-    focus: "50% 36%",
-    align: "left",
-    image: sangeeth.src,
   },
   {
     id: "wedding",
@@ -320,6 +320,7 @@ export default function Home() {
           phone: trimmedPhone,
           rsvp: choice,
           plusOnes: choice === "no" ? 0 : nextPlusOnes,
+          scope: "all",
         }),
       });
 
@@ -342,16 +343,19 @@ export default function Home() {
     const nextPlusOnes = choice === "no" ? 0 : plusOnes;
     setRsvpChoice(choice);
     setPlusOnes(nextPlusOnes);
-    void saveRsvp(choice, nextPlusOnes);
   };
 
   const handlePlusOnes = (delta: number) => {
     const nextValue = Math.max(0, Math.min(10, plusOnes + delta));
     setPlusOnes(nextValue);
+  };
 
-    if (rsvpChoice && rsvpChoice !== "no") {
-      void saveRsvp(rsvpChoice, nextValue);
+  const handleSubmitRsvp = () => {
+    if (!rsvpChoice) {
+      setStatusMessage("Please choose an RSVP option first.");
+      return;
     }
+    void saveRsvp(rsvpChoice, plusOnes);
   };
 
   return (
@@ -501,7 +505,7 @@ export default function Home() {
             </div>
 
             <div className="plusones">
-              <p>How many +1 are you bringing?</p>
+              <p>Additional guests</p>
               <div className="plusones-controls">
                 <button
                   type="button"
@@ -520,6 +524,15 @@ export default function Home() {
                 </button>
               </div>
             </div>
+
+            <button
+              type="button"
+              className="rsvp-submit"
+              onClick={handleSubmitRsvp}
+              disabled={savingRsvp}
+            >
+              Submit
+            </button>
 
             <p className="rsvp-note">
               We look forward to sharing these precious moments with you and celebrating together with love, laughter, and joy.

@@ -16,6 +16,8 @@ export default async function handler(
     const phone = String(req.body?.phone ?? "");
     const rsvpRaw = String(req.body?.rsvp ?? "").toLowerCase();
     const plusOnes = Number(req.body?.plusOnes ?? 0);
+    const scopeRaw = String(req.body?.scope ?? "all");
+    const scope = scopeRaw === "wedding" ? "wedding" : "all";
 
     if (!VALID.has(rsvpRaw)) {
       return res.status(400).json({ error: "Invalid RSVP choice" });
@@ -26,6 +28,7 @@ export default async function handler(
       phone,
       rsvp: rsvpRaw as "yes" | "no" | "maybe",
       plusOnes,
+      scope,
     });
 
     return res.status(200).json({ guest });

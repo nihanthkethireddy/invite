@@ -9,6 +9,7 @@ export type Guest = {
   phone: string;
   rsvp: RsvpChoice | null;
   plusOnes: number;
+  scope: "all" | "wedding";
   createdAt: string;
   updatedAt: string;
 };
@@ -44,6 +45,10 @@ async function readDb(): Promise<GuestDb> {
     if (!parsed.guests) {
       return { guests: [] };
     }
+    parsed.guests = parsed.guests.map((guest) => ({
+      ...guest,
+      scope: guest.scope ?? "all",
+    }));
     return parsed;
   } catch {
     await fs.mkdir(path.dirname(DB_PATH), { recursive: true });
@@ -120,6 +125,7 @@ export async function upsertGuestProfile(name: string, phone: string) {
       phone: normalized,
       rsvp: null,
       plusOnes: 0,
+      scope: "all",
       createdAt: timestamp,
       updatedAt: timestamp,
     };
@@ -135,6 +141,7 @@ export async function saveRsvp(params: {
   phone: string;
   rsvp: RsvpChoice;
   plusOnes: number;
+  scope: "all" | "wedding";
 }) {
   return withWriteLock(async () => {
     const normalized = normalizePhone(params.phone);
@@ -164,6 +171,7 @@ export async function saveRsvp(params: {
         phone: normalized,
         rsvp: null,
         plusOnes: 0,
+        scope: params.scope,
         createdAt: timestamp,
         updatedAt: timestamp,
       };
@@ -173,6 +181,7 @@ export async function saveRsvp(params: {
     guest.name = trimmedName;
     guest.rsvp = params.rsvp;
     guest.plusOnes = clampPlusOnes(params.plusOnes);
+    guest.scope = params.scope;
     guest.updatedAt = nowIso();
 
     await writeDb(db);
@@ -185,6 +194,7 @@ export async function adminAddOrUpdateGuest(params: {
   phone: string;
   rsvp: RsvpChoice | null;
   plusOnes: number;
+  scope: "all" | "wedding";
 }) {
   return withWriteLock(async () => {
     const normalized = normalizePhone(params.phone);
@@ -214,6 +224,7 @@ export async function adminAddOrUpdateGuest(params: {
         phone: normalized,
         rsvp: params.rsvp,
         plusOnes: clampPlusOnes(params.plusOnes),
+        scope: params.scope,
         createdAt: timestamp,
         updatedAt: timestamp,
       };
@@ -222,6 +233,7 @@ export async function adminAddOrUpdateGuest(params: {
       guest.name = trimmedName;
       guest.rsvp = params.rsvp;
       guest.plusOnes = clampPlusOnes(params.plusOnes);
+      guest.scope = params.scope;
       guest.updatedAt = nowIso();
     }
 
