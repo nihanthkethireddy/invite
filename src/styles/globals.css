@@ -947,12 +947,16 @@ body {
 .admin-table-wrap {
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.14);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   background: rgba(255, 255, 255, 0.04);
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
 }
 
 .admin-table {
   width: 100%;
+  min-width: 720px;
   border-collapse: collapse;
   background: transparent;
 }

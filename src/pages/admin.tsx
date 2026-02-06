@@ -111,8 +111,9 @@ export default function AdminPage() {
 
   const deleteGuest = async (id: string) => {
     const res = await fetch(`/api/admin/guests/${id}`, { method: "DELETE" });
+    const data = (await res.json().catch(() => ({}))) as { error?: string };
     if (!res.ok) {
-      setMessage("Failed to delete guest");
+      setMessage(data.error ?? "Failed to delete guest");
       return;
     }
 
