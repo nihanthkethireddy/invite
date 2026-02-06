@@ -732,6 +732,78 @@ body {
   font-size: 0.95rem;
 }
 
+.wedding-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.wedding-slider {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.wedding-track {
+  display: flex;
+  width: 200%;
+  height: 100%;
+  animation: slideLoop 22s linear infinite;
+}
+
+.wedding-slide {
+  position: relative;
+  flex: 0 0 33.3333%;
+  background-size: cover;
+  background-position: center;
+  filter: saturate(1.08) contrast(1.05);
+}
+
+.wedding-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(140deg, rgba(63, 14, 37, 0.7), rgba(9, 9, 14, 0.75)),
+    radial-gradient(circle at 20% 20%, rgba(255, 214, 160, 0.3), transparent 45%);
+}
+
+.wedding-content {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: grid;
+  align-content: center;
+  gap: 0.8rem;
+  padding: clamp(2rem, 6vw, 4.5rem);
+}
+
+.wedding-tags {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.wedding-tags span {
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@keyframes slideLoop {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 @media (max-width: 768px) {
   .event-section,
   .event-left,

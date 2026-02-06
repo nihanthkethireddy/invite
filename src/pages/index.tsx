@@ -441,7 +441,7 @@ export default function Home() {
                 className="event-visual"
                 dangerouslySetInnerHTML={{ __html: event.visualHint }}
               />
-              {event.id === "wedding" ? (
+              {event.id === "wedding" && (
                 <div className="finale-invite">
                   <p>With full hearts and our families by our side,</p>
                   <p>
@@ -450,8 +450,6 @@ export default function Home() {
                   </p>
                   <p className="event-meta">Formal invite details to follow</p>
                 </div>
-              ) : (
-                <p className="event-meta">Detailed schedule to be announced</p>
               )}
             </article>
           </section>
