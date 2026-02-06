@@ -61,7 +61,7 @@ const events: EventItem[] = [
   {
     id: "haldi",
     name: "Haldi",
-    subtitle: "Sunshine & Turmeric",
+    subtitle: "Bliss Fountain Area",
     details:
       "Playful haldi moments, yellow laughter, and family splashes all around.",
     visualHint:
