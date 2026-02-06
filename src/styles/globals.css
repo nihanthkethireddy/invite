@@ -62,7 +62,7 @@ body {
   transition: opacity 520ms ease;
 }
 
-.bg-layer[data-event-id="mehendi"]::after {
+/* .bg-layer[data-event-id="mehendi"]::after {
   background:
     repeating-linear-gradient(
       120deg,
@@ -72,7 +72,7 @@ body {
     radial-gradient(circle at 20% 22%, rgba(249, 214, 120, 0.34) 0%, transparent 42%),
     radial-gradient(circle at 82% 80%, rgba(59, 127, 86, 0.42) 0%, transparent 48%),
     linear-gradient(135deg, rgba(27, 72, 47, 0.8), rgba(95, 55, 23, 0.66));
-}
+} */
 
 .bg-layer.active {
   opacity: 1;

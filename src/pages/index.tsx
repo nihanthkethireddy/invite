@@ -1,11 +1,15 @@
 import { Cinzel, Manrope } from "next/font/google";
+import bride from "../../public/bride.jpg";
+import groom from "../../public/groom.jpg";
+import sangeeth from "../../public/sangeeth.jpeg";
+import haldi from "../../public/haldi.jpg";
+import wedding from "../../public/wedding.png";
 import {
   type CSSProperties,
   useEffect,
   useRef,
   useState,
 } from "react";
-
 const displayFont = Cinzel({
   subsets: ["latin"],
   variable: "--font-display",
@@ -55,6 +59,19 @@ const RSVP_LABEL: Record<RsvpChoice, string> = {
 
 const events: EventItem[] = [
   {
+    id: "haldi",
+    name: "Haldi",
+    subtitle: "Sunshine & Turmeric",
+    details:
+      "Playful haldi moments, yellow laughter, and family splashes all around.",
+    visualHint:
+      "Placeholder visual: both of them with yellow tones, water play, and family group.",
+    palette: "#f7bf1d",
+    focus: "50% 35%",
+    align: "left",
+    image: haldi.src,
+  },
+  {
     id: "pellikuthuru",
     name: "Pellikuthuru",
     subtitle: "Bridal Blessing Ceremony",
@@ -64,8 +81,7 @@ const events: EventItem[] = [
     palette: "#c4466d",
     focus: "52% 22%",
     align: "left",
-    image:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=2000&q=80",
+    image: bride.src,
   },
   {
     id: "pellikoduku",
@@ -77,40 +93,11 @@ const events: EventItem[] = [
     palette: "#8f3f58",
     focus: "48% 20%",
     align: "right",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=2000&q=80",
+    image: groom.src,
   },
   {
-    id: "haldi",
-    name: "Haldi",
-    subtitle: "Sunshine & Turmeric",
-    details:
-      "Playful haldi moments, yellow laughter, and family splashes all around.",
-    visualHint:
-      "Placeholder visual: both of them with yellow tones, water play, and family group.",
-    palette: "#f7bf1d",
-    focus: "50% 35%",
-    align: "left",
-    image:
-      "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?auto=format&fit=crop&w=2000&q=80",
-  },
-  {
-    id: "mehendi",
-    name: "Mehendi",
-    subtitle: "Henna & Smiles",
-    details:
-      "Hands painted with intricate mehendi patterns while music and laughter fill the evening.",
-    visualHint:
-      "Placeholder visual: detailed henna close-ups with both of them in frame.",
-    palette: "#3e8f5d",
-    focus: "50% 30%",
-    align: "right",
-    image:
-      "https://images.unsplash.com/photo-1607457561901-e6ec3a6d16cf?auto=format&fit=crop&w=2000&q=80",
-  },
-  {
-    id: "sangeeth",
-    name: "Sangeeth",
+    id: "mehendi/sangeeth",
+    name: "Mehendi/Sangeeth",
     subtitle: "Dance Night",
     details:
       "A high-energy night where both families celebrate through music and dance.",
@@ -118,8 +105,7 @@ const events: EventItem[] = [
     palette: "#5336bf",
     focus: "50% 36%",
     align: "left",
-    image:
-      "https://images.unsplash.com/photo-1516307365426-bea591f05011?auto=format&fit=crop&w=2000&q=80",
+    image: sangeeth.src,
   },
   {
     id: "wedding",
@@ -131,8 +117,7 @@ const events: EventItem[] = [
     palette: "#9f2444",
     focus: "50% 26%",
     align: "center",
-    image:
-      "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=2000&q=80",
+    image: wedding.src,
   },
 ];
 
