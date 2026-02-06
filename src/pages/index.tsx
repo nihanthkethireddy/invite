@@ -53,19 +53,19 @@ type Guest = {
 
 const RSVP_LABEL: Record<RsvpChoice, string> = {
   yes: "Yes, with joy",
-  no: "Sorry, can't make it",
-  maybe: "Maybe",
+  no: "Will Miss It",
+  maybe: "Hopefully",
 };
 
 const events: EventItem[] = [
   {
     id: "haldi",
     name: "Haldi",
-    subtitle: "Bliss Fountain Area",
+    subtitle: "March 05 | 8:00 AM<br/><a href='https://maps.app.goo.gl/y1AsV6Sv8YDu9wnr8'>BLISS</a>",
     details:
-      "Playful haldi moments, yellow laughter, and family splashes all around.",
+      "The celebrations begin with the vibrant Haldi ceremony, filled with laughter, love, and golden hues of joy. Join us as we bless the couple with turmeric, happiness, and warmth.",
     visualHint:
-      "Placeholder visual: both of them with yellow tones, water play, and family group.",
+     "Dress Code<br/>Color Theme: Yellow<br/>Women: Sheraras, Kurtis, Kalis, or Lehengas<br/>Men: Kurtha with Pajamas",
     palette: "#f7bf1d",
     focus: "50% 35%",
     align: "left",
@@ -74,10 +74,10 @@ const events: EventItem[] = [
   {
     id: "pellikuthuru",
     name: "Pellikuthuru",
-    subtitle: "Bridal Blessing Ceremony",
+    subtitle: "March 06 | 9:00 AM<br/><a href='https://maps.app.goo.gl/y1AsV6Sv8YDu9wnr8'>BLISS</a>",
     details:
-      "A gentle morning of blessings and rituals, celebrating the bride's joy.",
-    visualHint: "Placeholder visual: close-up of the bride's face.",
+      "A sacred and beautiful tradition filled with blessings, rituals, and heartfelt emotions as the bride is prepared for her new journey.",
+    visualHint: "Dress Code<br/>Traditional Attire",
     palette: "#c4466d",
     focus: "52% 22%",
     align: "left",
@@ -86,10 +86,10 @@ const events: EventItem[] = [
   {
     id: "pellikoduku",
     name: "Pellikoduku",
-    subtitle: "Groom's Traditional Ritual",
+    subtitle: "March 06 | 9:00 AM<br/><a href='https://maps.app.goo.gl/y1AsV6Sv8YDu9wnr8'>BLISS</a>",
     details:
-      "Family prayers and sacred rituals that prepare the groom for the wedding day.",
-    visualHint: "Placeholder visual: close-up of the groom's face.",
+      "A joyful and sacred ritual celebrating the groom as he prepares to step into a new chapter of life. Surrounded by love, laughter, and blessings, this ceremony is filled with tradition, warmth, and beautiful moments shared with family and friends. Join us as we celebrate the groom and bless him for a lifetime of happiness, strength, and togetherness.",
+    visualHint: "Dress Code<br/>Traditional Attire",
     palette: "#8f3f58",
     focus: "48% 20%",
     align: "right",
@@ -98,10 +98,10 @@ const events: EventItem[] = [
   {
     id: "mehendi/sangeeth",
     name: "Mehendi/Sangeeth",
-    subtitle: "Dance Night",
+    subtitle: "March 05 | 6:30 PM<br/><a href='https://maps.app.goo.gl/y1AsV6Sv8YDu9wnr8'>BLISS</a>",
     details:
-      "A high-energy night where both families celebrate through music and dance.",
-    visualHint: "Placeholder visual: bride and groom dancing together.",
+      "An evening of music, dance, colors, and celebration. Let’s sing, dance, and celebrate love together as hands are adorned with mehendi and hearts with happiness.",
+    visualHint: "Dress Code<br/>Anything Shimmery & Festive",
     palette: "#5336bf",
     focus: "50% 36%",
     align: "left",
@@ -110,10 +110,10 @@ const events: EventItem[] = [
   {
     id: "wedding",
     name: "Wedding",
-    subtitle: "The Sacred Moment",
-    details: "The vows, the blessings, and the moment our new chapter begins.",
+    subtitle: "March 07 | 10:05 AM<br/><a href='https://maps.app.goo.gl/gD2yziGvTH6FqWCE9'>DREAM RANCH</a>",
+    details: "The most awaited moment, where two hearts unite and promise forever in the presence of family, love, and divine blessings. Join us as we begin our forever together.",
     visualHint:
-      "Placeholder visual: warm close-up of both during the wedding ritual.",
+      "Dress Code<br/>Traditional Attire",
     palette: "#9f2444",
     focus: "50% 26%",
     align: "center",
@@ -412,10 +412,9 @@ export default function Home() {
           <p className="eyebrow">Wedding Invitation</p>
           <h1 className="hero-title">Bride & Groom</h1>
           <p className="sub">
-            This page is a journey through our wedding celebrations, from
-            pre-wedding rituals to the wedding ceremony itself.
+            With joyful hearts and endless gratitude, we invite you to celebrate one of the most beautiful chapters of our lives. This wedding is not just the union of two souls, but the coming together of families, laughter, traditions, and love that will last a lifetime.
           </p>
-          <p className="hero-note">Scroll to experience each event in order.</p>
+          <p className="hero-note">Your presence means the world to us.</p>
         </section>
 
         {events.map((event, index) => (
@@ -433,9 +432,15 @@ export default function Home() {
                 {String(index + 1).padStart(2, "0")} / {String(events.length).padStart(2, "0")}
               </p>
               <h2 className="event-title">{event.name}</h2>
-              <p className="event-subtitle">{event.subtitle}</p>
+              <p
+                className="event-subtitle"
+                dangerouslySetInnerHTML={{ __html: event.subtitle }}
+              />
               <p className="event-details">{event.details}</p>
-              <p className="event-visual">{event.visualHint}</p>
+              <p
+                className="event-visual"
+                dangerouslySetInnerHTML={{ __html: event.visualHint }}
+              />
               {event.id === "wedding" ? (
                 <div className="finale-invite">
                   <p>With full hearts and our families by our side,</p>
@@ -455,10 +460,9 @@ export default function Home() {
         <section className="rsvp-section" data-snap-section>
           <div className="rsvp-shell">
             <p className="eyebrow">RSVP</p>
-            <h2>Will you celebrate with us?</h2>
+            <h4>Your presence at our wedding means more to us than words can express. As we prepare for these beautiful celebrations, we kindly request you to let us know your availability so we can make the arrangements comfortable and memorable for everyone.</h4>
             <p className="rsvp-intro">
-              Enter your details below and choose your RSVP. Using the same name
-              and phone will update your previous response.
+              Kindly respond at your convenience
             </p>
 
             <div className="rsvp-identity">
@@ -485,7 +489,7 @@ export default function Home() {
             </div>
 
             <div className="rsvp-options">
-              {(["yes", "maybe", "no"] as RsvpChoice[]).map((choice) => (
+              {(["yes", "no", "maybe"] as RsvpChoice[]).map((choice) => (
                 <button
                   key={choice}
                   type="button"
@@ -520,8 +524,7 @@ export default function Home() {
             </div>
 
             <p className="rsvp-note">
-              One RSVP per phone number. Selecting a different option updates your
-              previous response.
+              We look forward to sharing these precious moments with you and celebrating together with love, laughter, and joy.
             </p>
             {statusMessage ? <p className="status-msg">{statusMessage}</p> : null}
           </div>
