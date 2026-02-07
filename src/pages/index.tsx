@@ -63,9 +63,9 @@ const events: EventItem[] = [
     name: "Haldi",
     subtitle: "March 05 | 8:00 AM<br/><a href='https://maps.app.goo.gl/y1AsV6Sv8YDu9wnr8'>BLISS</a>",
     details:
-      "The celebrations begin with the vibrant Haldi ceremony, filled with laughter, love, and golden hues of joy.",
+      "The celebrations begin with our radiant Haldi, a morning wrapped in sunshine, love, and golden joy.",
     visualHint:
-     "Dress Code<br/>Color Theme: Yellow<br/>Women: Sheraras, Kurtis, Kalis, or Lehengas<br/>Men: Kurtha with Pajamas",
+     "<b>Dress Code</b><br/>Sun-kissed Yellow<br/>Glow in soft, dreamy shades of yellow.",
     palette: "#f7bf1d",
     focus: "50% 35%",
     align: "left",
@@ -76,8 +76,8 @@ const events: EventItem[] = [
     name: "Mehendi/Sangeeth",
     subtitle: "March 05 | 6:30 PM<br/><a href='https://maps.app.goo.gl/y1AsV6Sv8YDu9wnr8'>BLISS</a>",
     details:
-      "An evening of music, dance, colors, and celebration. Let’s sing, dance, and celebrate love together as hands are adorned with mehendi and hearts with happiness.",
-    visualHint: "Dress Code<br/>Anything Shimmery & Festive",
+      "A magical night celebrating #SAKI, filled with dance, blooming mehendi, hearts full of joy, and moments that become core memories.",
+    visualHint: "<b>Dress Code</b><br/>Anything Shimmery & Festive",
     palette: "#5336bf",
     focus: "50% 36%",
     align: "left",
@@ -88,8 +88,8 @@ const events: EventItem[] = [
     name: "Pellikuthuru",
     subtitle: "March 06 | 9:00 AM<br/><a href='https://maps.app.goo.gl/y1AsV6Sv8YDu9wnr8'>BLISS</a>",
     details:
-      "A sacred and beautiful tradition filled with blessings, rituals, and heartfelt emotions as the bride is prepared for her new journey.",
-    visualHint: "Dress Code<br/>Traditional Attire",
+      "In the grace of sacred traditions and divine blessings, is lovingly adorned and prepared to step into her new life as a bride.",
+    visualHint: "<b>Dress Code</b><br/>Traditional Attire",
     palette: "#c4466d",
     focus: "52% 22%",
     align: "left",
@@ -100,8 +100,8 @@ const events: EventItem[] = [
     name: "Pellikoduku",
     subtitle: "March 06 | 9:00 AM<br/><a href='https://maps.app.goo.gl/y1AsV6Sv8YDu9wnr8'>BLISS</a>",
     details:
-      "A joyful and sacred ritual celebrating the groom as he prepares to step into a new chapter of life.",
-    visualHint: "Dress Code<br/>Traditional Attire",
+      "With sacred rituals and heartfelt blessings, he is prepared with honor and joy for his new journey as a groom.",
+    visualHint: "<b>Dress Code</b><br/>Traditional Attire",
     palette: "#8f3f58",
     focus: "48% 20%",
     align: "right",
@@ -111,9 +111,9 @@ const events: EventItem[] = [
     id: "wedding",
     name: "Wedding",
     subtitle: "March 07 | 10:05 AM<br/><a href='https://maps.app.goo.gl/gD2yziGvTH6FqWCE9'>DREAM RANCH</a>",
-    details: "The most awaited moment, where two hearts unite and promise forever in the presence of family, love, and divine blessings. Join us as we begin our forever together.",
+    details: "Through Jeelakarra Bellam, Mangalyam, and Talambralu, blessed by love and tradition, they begin their eternal journey as one.",
     visualHint:
-      "Dress Code<br/>Traditional Attire",
+      "<b>Dress Code</b><br/>Traditional Attire",
     palette: "#9f2444",
     focus: "50% 26%",
     align: "center",
@@ -455,7 +455,7 @@ export default function Home() {
           <p className="eyebrow">Wedding Invitation</p>
           <h1 className="hero-title">Nikitha & Sathish</h1>
           <p className="sub">
-            With joyful hearts and endless gratitude, we invite you to celebrate one of the most beautiful chapters of our lives. This wedding is not just the union of two souls, but the coming together of families, laughter, traditions, and love that will last a lifetime.
+            With joyful hearts, we invite you to celebrate the wedding of Nikitha & Sathish.
           </p>
           <p className="hero-note">Your presence means the world to us.</p>
         </section>

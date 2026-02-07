@@ -292,13 +292,12 @@ export default function WeddingPage() {
           <article className="event-copy">
             <p className="event-count">Wedding</p>
             <h2 className="event-title">The Sacred Moment</h2>
-            <p className="event-subtitle">Vows · Blessings · Forever</p>
+            <p className="event-subtitle">March 07 | 10:05 AM</p>
             <p className="event-details">
               With full hearts, we invite you to witness the union and celebrate
               the beginning of our journey.
             </p>
             <p className="event-visual">
-              March 07 | 10:05 AM
               <br/><a href='https://maps.app.goo.gl/gD2yziGvTH6FqWCE9'>DREAM RANCH</a>
             </p>
           </article>
